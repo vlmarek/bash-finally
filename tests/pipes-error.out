@@ -1,5 +1,0 @@
-234
-
-Error stack:
-[1] ./pipes-error.sh:30 main(): 	echo yes | process 1 | process 2 | process 3 | process 4
-[2] ./pipes-error.sh:33 main(): main "$@"

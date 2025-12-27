@@ -3,7 +3,12 @@ process running ...
 process running ...
 process running ...
 ... process-end
+234
 ... process-end
 ... process-end
 ... process-end
 trap-main
+
+Error stack:
+[1] ./pipes-error.sh:31 main(): 	echo yes | process 1 | process 2 | process 3 | process 4
+[2] ./pipes-error.sh:34 main(): main "$@"

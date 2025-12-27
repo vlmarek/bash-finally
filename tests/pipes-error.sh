@@ -6,6 +6,8 @@ source ../finally
 
 set -o pipefail
 
+exec 1>&2 # Make sure that 'finally' does not write to closed pipe
+
 function process-end {
 	echo 1>&2 "... process-end"
 }
