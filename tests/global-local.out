@@ -1,0 +1,22 @@
+recursion 2
+recursion 3
+recursion 4
+recursion 5
+recursion 6
+recursion 7
+recursion 8
+recursion 9
+recursion 10
+recursion 11
+Trap VAR=11 
+Trap VAR=10 
+Trap VAR=9 
+Trap VAR=8 
+Trap VAR=7 
+Trap VAR=6 
+Trap VAR=5 
+Trap VAR=4 
+Trap VAR=3 
+Trap VAR=2 
+trap-main
+declare -- __FINALLY_ERROR=""

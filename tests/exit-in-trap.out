@@ -1,0 +1,13 @@
+trap-aa aaa
+trap-main main
+trap-aa aaa
+trap-main trap-aaa 5
+trap-top-level trap-aaa 5
+
+Exit code 5:
+[1] ./exit-in-trap.sh:1 trap-aaa(): #!/bin/bash
+[2] ../finally:43 __finally-trap-execute():     eval "$tmp" || :
+[3] ../finally:51 __finally-trap-handler():   __FINALLY_FUNCTION="${FUNCNAME[1]}" __finally-trap-execute "$( typeset -p STACK )"
+[4] ./exit-in-trap.sh:16 aaa(): function aaa {
+[5] ./exit-in-trap.sh:32 main(): 	aaa
+[6] ./exit-in-trap.sh:37 main(): main "$@"

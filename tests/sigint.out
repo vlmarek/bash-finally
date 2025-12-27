@@ -1,0 +1,9 @@
+killing myself
+SIGINT received ...
+removing tmpfile
+declare -- __FINALLY_ERROR="1"
+
+Exit code 1:
+[1] ../finally:1 __finally-end-handler-int(): #!/bin/bash
+[2] ./sigint.sh:1 main(): #!/bin/bash
+[3] ./sigint.sh:34 main(): main "$@"

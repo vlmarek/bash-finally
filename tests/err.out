@@ -1,0 +1,7 @@
+
+Error stack:
+[1] ./err.sh:7 three(): function three { false; }
+[2] ./err.sh:8 two(): function two { three; }
+[3] ./err.sh:9 one(): function one { two; }
+[4] ./err.sh:10 main(): function main { one; }
+[5] ./err.sh:12 main(): main "$@"

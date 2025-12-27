@@ -1,0 +1,7 @@
+killing sleep
+declare -- __FINALLY_ERROR="143"
+removing tmpfile
+
+Error stack:
+[1] ./sigterm.sh:32 main():   wait $PID
+[2] ./sigterm.sh:36 main(): main "$@"

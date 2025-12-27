@@ -1,0 +1,10 @@
+trap ccc
+declare -x __FINALLY_FUNCTION="ccc"
+trap bbb
+declare -x __FINALLY_FUNCTION="bbb"
+trap aaa
+declare -x __FINALLY_FUNCTION="aaa"
+trap start
+declare -x __FINALLY_FUNCTION="start"
+trap top-level
+declare -x __FINALLY_FUNCTION="main"

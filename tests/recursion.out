@@ -1,0 +1,24 @@
+main1
+recursion 10
+recursion 9
+recursion 8
+recursion 7
+recursion 6
+recursion 5
+recursion 4
+recursion 3
+recursion 2
+recursion 1
+good 1
+good 2
+good 3
+good 4
+good 5
+good 6
+good 7
+good 8
+good 9
+good 10
+main2
+trap-main
+trap-top-level

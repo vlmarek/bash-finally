@@ -1,0 +1,111 @@
+#!/bin/bash
+
+set -eEuo pipefail
+
+# Hash containing 'activated' traps
+typeset -A __FINALLY_HASH
+typeset __FINALLY_ERROR=
+typeset __FINALLY_FUNCTION=
+
+trap __finally-error-handler ERR
+trap __finally-end-handler-term TERM
+trap __finally-end-handler-int INT
+trap __finally-end-handler-exit EXIT
+
+# Create or delete a trap
+function finally {
+  # Create unique hash key for given callstack. Ignore the call to 'finally' itself.
+  local STACK=( $BASHPID "${FUNCNAME[@]:1}" )
+  local OUT=$( typeset -p STACK )
+
+  if [ $# -eq 0 ]; then
+    __FINALLY_HASH[$OUT]=""
+    return
+  fi
+
+  __FINALLY_HASH[$OUT]="$(printf '%q ' "$@")"
+
+  # Enable function tracing for this function
+  [ ${#FUNCNAME[@]} -le 2 ] || typeset -f -t "${FUNCNAME[1]}"
+  trap __finally-trap-handler RETURN 
+
+  trap __finally-error-handler ERR
+  trap __finally-end-handler-term TERM
+  trap __finally-end-handler-int INT
+  trap __finally-end-handler-exit EXIT
+}
+
+# Given hash key to __FINALLY_HASH try to execute the trap
+function __finally-trap-execute {
+  if [[ -v __FINALLY_HASH[$1] ]]; then
+    local tmp="${__FINALLY_HASH[$1]}"
+    __FINALLY_HASH[$1]=""
+    eval "$tmp" || :
+  fi
+}
+
+# Called from 'RETURN' trap, construct the key to our table
+function __finally-trap-handler {
+  # THe same key as in 'finally'
+  local STACK=( $BASHPID "${FUNCNAME[@]:1}" )
+  __FINALLY_FUNCTION="${FUNCNAME[1]}" __finally-trap-execute "$( typeset -p STACK )"
+}
+
+# Call all traps
+function __finally-trap-handler-unwind {
+  # This function is called from one of trap handlig functions, so we have to
+  # strip first two elements on FUNCNAME array. Not just 1.
+  local CALLSTACK=( "${FUNCNAME[@]:2}" )
+  while [ ${#CALLSTACK[@]} -gt 0 ]; do
+    local STACK=( $BASHPID "${CALLSTACK[@]}" )
+    __FINALLY_FUNCTION="${FUNCNAME[2]}" __finally-trap-execute "$( typeset -p STACK )"
+    CALLSTACK=( "${CALLSTACK[@]:1}" )
+  done
+}
+
+
+# Error handler - also print stack
+function __finally-error-handler {
+  __FINALLY_ERROR=$?
+  __finally-trap-handler-unwind
+  __finally-stacktrace $'\n'"Error stack:" || :
+  trap '' EXIT
+  exit $__FINALLY_ERROR
+}
+
+function __finally-end-handler-term {
+  echo "SIGTERM received ..."
+  __FINALLY_ERROR=1
+  exit 1 # Let exit handler process the traps
+}
+
+function __finally-end-handler-int {
+  echo "SIGINT received ..."
+  __FINALLY_ERROR=1
+  exit 1 # Let exit handler process the traps
+}
+
+function __finally-end-handler-exit {
+  local RET=$?
+  [ $RET -eq 0 ] || __FINALLY_ERROR=$RET
+  __finally-trap-handler-unwind
+  if [[ $RET -ne 0 ]]; then
+    __finally-stacktrace $'\n'"Exit code $RET:"
+  fi
+  trap '' EXIT
+  exit $RET
+}
+
+function __finally-stacktrace {
+  if [ -n "${1:-}" ]; then
+    echo "$1"
+  else
+    echo
+    echo "Stack:"
+  fi
+  local i=1 line file func
+  while read -r line func file < <(caller $i || :); do
+    echo "[$i] $file:$line $func(): $([ -e "$file" ] && sed -n ${line}p "$file" || : )"
+    ((i++))
+  done
+}

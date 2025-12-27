@@ -1,0 +1,22 @@
+#!/bin/bash
+
+. "$(dirname "${BASH_SOURCE[0]}")/finally"
+
+DIR=$( mktemp -t -d runtest.XXXXXXXXX )
+function cleanup {
+	rm -rf "$DIR"
+}
+finally cleanup
+
+cd "$(dirname "${BASH_SOURCE[0]}")/tests"
+
+RET=0
+for FILE in *.sh; do
+	echo "$FILE ..."
+	chmod +x "$FILE"
+	./"$FILE" > "$DIR/out" 2>"$DIR/err" || :
+	diff -u "${FILE%.sh}.out" "$DIR/out" || RET=1
+	diff -u "${FILE%.sh}.err" "$DIR/err" || RET=1
+done
+
+exit $RET
