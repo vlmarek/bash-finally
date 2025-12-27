@@ -4,8 +4,6 @@ source ../finally
 
 # This does not work in bash
 
-set -o pipefail
-
 function process-end {
 	echo 1>&2 "process-end"
 }

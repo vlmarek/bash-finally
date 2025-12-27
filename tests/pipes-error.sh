@@ -4,11 +4,10 @@ source ../finally
 
 # Show that exit trap will fire in pipe process too
 
-set -o pipefail
-
 exec 1>&2 # Make sure that 'finally' does not write to closed pipe
 
 function process-end {
+	sleep 1
 	echo 1>&2 "... process-end"
 }
 
