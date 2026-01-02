@@ -70,6 +70,7 @@ function __finally-error-handler {
   __finally-trap-handler-unwind
   __finally-stacktrace $'\n'"Error stack:" || :
   trap '' EXIT
+  __finally-cleanup
   exit $__FINALLY_ERROR
 }
 
@@ -93,7 +94,15 @@ function __finally-end-handler-exit {
     __finally-stacktrace $'\n'"Exit code $RET:"
   fi
   trap '' EXIT
+  __finally-cleanup
   exit $RET
+}
+
+# This function can be redefined by user to have some last moment cleanup
+# even after 'finally' is done. This is handy if you re-execute the script from
+# temporary place.
+function __finally-cleanup {
+  :
 }
 
 function __finally-stacktrace {
