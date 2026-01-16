@@ -125,5 +125,27 @@ function func1 {
 func1
 ```
 
+## Sourcing a file fires RETURN trap
+```bash
+#!/bin/bash
+
+. finally
+
+finally echo "I AM DONE"
+
+. other
+
+echo "I STILL SHOULD BE WORKING"
+```
+
+This prints
+```
+I AM DONE
+I STILL SHOULD BE WORKING
+```
+
+I do not know how to avoid this. I am using `eval "$(<other)"` ...
+
+
 ## Trace attribute
 Any function guarded by `finally` receives trace attribute (`declare -f -t function`). I'm not aware of any side effects, but I wanted to mention it anyway.
