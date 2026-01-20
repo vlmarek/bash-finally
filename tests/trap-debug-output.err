@@ -1,0 +1,5 @@
++ false
+++ __finally-error-handler
+++ __FINALLY_ERROR=1
+++ __finally-trap-handler-unwind
+++ set +x

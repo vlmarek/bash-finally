@@ -1,0 +1,4 @@
+
+Error stack:
+[1] ./trap-debug-output.sh:10 start(): 	false
+[2] ./trap-debug-output.sh:13 main(): start "$@"

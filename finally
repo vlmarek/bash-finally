@@ -55,6 +55,7 @@ function __finally-trap-handler {
 function __finally-trap-handler-unwind {
   # This function is called from one of trap handlig functions, so we have to
   # strip first two elements on FUNCNAME array. Not just 1.
+  set +x # Disable any tracing
   local CALLSTACK=( "${FUNCNAME[@]:2}" )
   while [ ${#CALLSTACK[@]} -gt 0 ]; do
     local STACK=( $BASHPID "${CALLSTACK[@]}" )
