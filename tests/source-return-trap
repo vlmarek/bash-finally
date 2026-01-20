@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. finally
+
+finally echo "I AM DONE"
+
+. /dev/null
+
+echo "I STILL SHOULD BE WORKING"
