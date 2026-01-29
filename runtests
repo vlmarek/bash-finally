@@ -10,8 +10,14 @@ finally cleanup
 
 cd "$(dirname "${BASH_SOURCE[0]}")/tests"
 
+if [ $# -gt 0 ]; then
+	TESTS=( $( printf '%s\n' "$@" | sed -e 's,^.*/,,' ) )
+else
+	TESTS=( $( compgen -G '*.sh' ) )
+fi
+
 RET=0
-for FILE in *.sh; do
+for FILE in "${TESTS[@]}"; do
 	echo "$FILE ..."
 	chmod +x "$FILE"
 	./"$FILE" > "$DIR/out" 2>"$DIR/err" || :
