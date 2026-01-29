@@ -13,6 +13,7 @@ function recursion {
 	echo "recursion $1"
 	local NUM=$(( $1 - 1 ))
 	if [[ $1 == 4 ]]; then
+		finally # We must clear existing code before overwriting
 		finally trap-recursion changed
 	elif [[ $1 == 2 ]]; then
 		finally # cancel

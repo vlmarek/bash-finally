@@ -23,6 +23,11 @@ function finally {
     return
   fi
 
+  if [ -n "${__FINALLY_HASH[$OUT]:-}" ]; then
+    echo "Error, finally is already set: ${__FINALLY_HASH[$OUT]}"
+    exit 1
+  fi
+
   __FINALLY_HASH[$OUT]="$(printf '%q ' "$@")"
 
   # Enable function tracing for this function
