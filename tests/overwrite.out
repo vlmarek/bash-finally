@@ -1,0 +1,6 @@
+Error, finally is already set: : 
+
+Exit code 1:
+[1] ../finally:1 finally(): #!/bin/bash
+[2] ./overwrite.sh:9 main(): 	finally error
+[3] ./overwrite.sh:12 main(): main "$@"
