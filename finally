@@ -96,7 +96,7 @@ function __finally-end-handler-exit {
   local RET=$?
   [ $RET -eq 0 ] || __FINALLY_ERROR=$RET
   __finally-trap-handler-unwind
-  if [[ $RET -ne 0 ]]; then
+  if [[ $RET -ne 0 ]] && [ ! -v __FINALLY_QUIET_EXIT ]; then
     __finally-stacktrace $'\n'"Exit code $RET:"
   fi
   trap '' EXIT

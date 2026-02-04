@@ -50,6 +50,9 @@ finally <command‑or‑function> [args…]
 * If the function exits *unexpectedly* (`Ctrl‑c`, a `kill signal`, or an `error`), all active traps are invoked, not only the one belonging to the current function. And the program terminates.
 * In case of an error, the script also prints a call‑stack trace showing where the problem occurred.
 
+# If you want to intentionally exit with non-zero code
+Normally you would get stack trace, but that might not be disirable. Just define `__FINALLY_QUIET_EXIT` and the stack trace will not be displayed.
+
 # Gotchas
 ## Strict mode
 When you source finally, it enables the "unofficial Bash strict mode":
