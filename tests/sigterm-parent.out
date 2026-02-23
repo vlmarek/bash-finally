@@ -1,6 +1,6 @@
 killing parent
 SIGTERM received ...
-declare -- __FINALLY_ERROR="1"
+declare -- __FINALLY_ERROR="SIGTERM"
 removing tmpfile
 
 Exit code 1:

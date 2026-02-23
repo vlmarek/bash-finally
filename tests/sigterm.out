@@ -1,7 +1,9 @@
 killing sleep
-declare -- __FINALLY_ERROR="143"
+SIGTERM received ...
+declare -- __FINALLY_ERROR="SIGTERM"
 removing tmpfile
 
-Error stack:
-[1] ./sigterm.sh:32 main():   wait $PID
-[2] ./sigterm.sh:36 main(): main "$@"
+Exit code 1:
+[1] ../finally:1 __finally-end-handler-term(): #!/bin/bash
+[2] ./sigterm.sh:1 main(): #!/bin/bash
+[3] ./sigterm.sh:36 main(): main "$@"

@@ -25,7 +25,7 @@ function main {
 
   sleep 100 &
   local PID=$!
-  echo $PID > $TMPFILE
+  echo $BASHPID > $TMPFILE
 
   killwait &
 

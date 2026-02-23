@@ -1,5 +1,6 @@
 + false
 ++ __finally-error-handler
+++ [[ '' == SIG* ]]
 ++ __FINALLY_ERROR=1
 ++ __finally-trap-handler-unwind
 ++ set +x

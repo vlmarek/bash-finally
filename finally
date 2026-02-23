@@ -72,7 +72,7 @@ function __finally-trap-handler-unwind {
 
 # Error handler - also print stack
 function __finally-error-handler {
-  __FINALLY_ERROR=$?
+  [[ "${__FINALLY_ERROR:-}" == SIG* ]] || __FINALLY_ERROR=$?
   __finally-trap-handler-unwind
   __finally-stacktrace $'\n'"Error stack:" || :
   trap '' EXIT
@@ -82,19 +82,21 @@ function __finally-error-handler {
 
 function __finally-end-handler-term {
   echo "SIGTERM received ..."
-  __FINALLY_ERROR=1
+  __FINALLY_ERROR=SIGTERM
   exit 1 # Let exit handler process the traps
 }
 
 function __finally-end-handler-int {
   echo "SIGINT received ..."
-  __FINALLY_ERROR=1
+  __FINALLY_ERROR=SIGINT
   exit 1 # Let exit handler process the traps
 }
 
 function __finally-end-handler-exit {
   local RET=$?
-  [ $RET -eq 0 ] || __FINALLY_ERROR=$RET
+  if [ $RET -ne 0 ] && [[ ${__FINALLY_ERROR:-} != SIG* ]]; then
+    __FINALLY_ERROR=$RET
+  fi
   __finally-trap-handler-unwind
   if [[ $RET -ne 0 ]] && [ ! -v __FINALLY_QUIET_EXIT ]; then
     __finally-stacktrace $'\n'"Exit code $RET:"
