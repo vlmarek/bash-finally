@@ -74,7 +74,9 @@ function __finally-trap-handler-unwind {
 function __finally-error-handler {
   [[ "${__FINALLY_ERROR:-}" == SIG* ]] || __FINALLY_ERROR=$?
   __finally-trap-handler-unwind
-  __finally-stacktrace $'\n'"Error stack:" || :
+  if [ ! -v __FINALLY_QUIET_EXIT ]; then
+    __finally-stacktrace $'\n'"Error stack:" || :
+  fi
   trap '' EXIT
   __finally-cleanup
   exit $__FINALLY_ERROR
